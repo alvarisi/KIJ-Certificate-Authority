@@ -1,4 +1,5 @@
-Untuk KIJ-Certificate Authority, spiritgit pull
+Untuk KIJ-Certificate Authority
+
 FrameWork : Codeigniter
 CSS FrontEnd : Bootflat + Bootstrap
 DB : mysql
