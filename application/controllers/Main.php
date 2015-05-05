@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Main extends CI_Controller {
   public function __construct($foo = null) {
     parent::__construct();
+    $this->load->model('User');
     $this->load->model('Certificate');
   }
 
@@ -36,16 +37,22 @@ class Main extends CI_Controller {
   }
   public function index()
   {
-    $data['content'] = $this->Certificate->all();
-    $content = $this->load->view('/page/index',$data, true);
+    $content = $this->load->view('/page/index',null, true);
     $this->render($content);
   }
 
   public function lists()
   {
-    $data['content'] = $this->Certificate->all();
-    $content = $this->load->view('/page/list',$data, true);
-    $this->render($content);
+	$data = null;
+	if($this->session->userdata('isAdmin'))
+		$data['content'] = $this->Certificate->all();	
+	else
+	{
+		$arr = array('user_id' => $this->session->userdata('id'));
+		$data['content'] = $this->Certificate->get($arr);
+	}
+	$content = $this->load->view('/page/list',$data, true);
+	$this->render($content);
   }
   public function add()
   {
@@ -68,6 +75,7 @@ class Main extends CI_Controller {
         'locality_name' => $this->input->post('locality_name'),
         'organization_name' => $this->input->post('organization_name'),
         'organizational_unit' => $this->input->post('organizational_unit'),
+	'user_id' => $this->session->userdata('id')
         );
       $this->Certificate->insert($data);
       return redirect('main/lists');
@@ -95,10 +103,9 @@ class Main extends CI_Controller {
         );
       $ca = new CertificateAuthority($arr_t);
       $pk = $ca->set_private_key();
-      var_dump($pk);
       $csr = $ca->generateCSR();
-// $sscert = $ca->selfSign($csr);
-// openssl_csr_export($csr, $csrout) and var_dump($csrout);
+	 $sscert = $ca->selfSign($csr);
+	 openssl_csr_export($csr, $csrout) and var_dump($csrout);
 // openssl_x509_export($sscert, $certout) and var_dump($certout);
       break;
 
@@ -107,11 +114,33 @@ class Main extends CI_Controller {
       break;
     }
   }
+
+	public function start()
+	{
+		$data = array('email' => 'admin@local.com', 'password' => '12345','level' => '1');
+//		$this->User->insert($data);
+		$arr_t = array(
+			'countryName' => 'ID',
+			'stateOrProvinceName' => 'Jawa Timur',
+			'localityName' => 'Surabaya',
+			'organizationName' => 'Institut Teknologi Sepuluh Nopember',
+			'organizationalUnitName' => 'Teknik Informatika',
+			'commonName' => 'KIJ',
+			'emailAddress' => 'admin@local.com'
+		);
+		$ca = new CertificateAuthority($arr_t);
+		$pk = $ca->set_private_key();
+	      	$csr = $ca->generateCSR();
+		$sscert = $ca->selfSign($csr);
+	 openssl_x509_export_to_file($sscert,base_url().'public/ca/ca.crt');
+//		openssl_csr_export($csr, $csrout) and var_dump($csrout);
+	}
 }
 
 Class CertificateAuthority {
   protected $private_key;
   protected $dn;
+
   public function __construct($data = null) {
     $this->dn = $data;
   }
@@ -136,9 +165,11 @@ Class CertificateAuthority {
     $csr = openssl_csr_new($this->dn, $this->private_key);
     return $csr;
   }
-  public function selfSign($csr, $days=365)
+	
+  public function selfSign($csr, $days=365, $cacert=null)
   {
-    $sscert = openssl_csr_sign($csr, null, $this->private_key, $days);
+    $sscert = openssl_csr_sign($csr, $cacert, $this->private_key, $days);
     return $sscert;
   }
+
 }
