@@ -18,53 +18,91 @@
 				echo form_open_multipart('main/add',[ 'class' => 'form' ]);
 				?>
 				<div class="form-group">
-					<label class="form-label">
-						Nama Perusahaan
-					</label>
-					<?php
-					$att = array('name' => 'name', 'class' => 'form-control');
-					echo form_input($att);
-					?>
-					<?php echo form_error('name'); ?>
-				</div>			
-				<div class="form-group">
-					<label class="form-label">
-						File
-					</label>
-					<?php
-					$att = array('name' => 'file', 'class' => 'form-control');
-					echo form_upload($att);
-					?>
-					<?php echo form_error('file'); ?>
-				</div>
-				<div class="form-group">
-					<label class="form-label">
-						Type Hashing
-					</label>
-					<div class="">
-						<div class="">
+					<div class="col-md-6">
+						<label class="form-label">
+						Nama
+						</label>
 						<?php
-						$att = array('name' => 'hashing_type','value' => 'SHA1','class' => '','id' => 'SHA1');
-						echo form_radio($att);
-						echo form_label('SHA1','SHA1',['id' => 'SHA1']);
+						$att = array('name' => 'common_name', 'class' => 'form-control');
+						echo form_input($att);
 						?>
-						</div>
-						<div class="">
+						<?php echo form_error('common_name'); ?>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">
+						Email
+					</label>
 						<?php
-						$att = array('name' => 'hashing_type', 'value' => 'SHA256','class' => '','id' => 'SHA256');
-						echo form_radio($att);
-						echo form_label('SHA256','SHA256',['id' => 'SHA256']);
+						$att = array('name' => 'email_address', 'class' => 'form-control');
+						echo form_input($att);
 						?>
-						</div>
-						<?php echo form_error('hashing_type'); ?>
-
+						<?php echo form_error('email_address'); ?>
 					</div>
 				</div>
 				<div class="form-group">
-					<?php
-					$att = ['class' => 'btn btn-primary', 'value' => 'Simpan'];
-					echo form_submit($att);
-					?>
+					<div class="col-md-6">
+						<label class="form-label">
+						Negara
+						</label>
+						<?php
+						$att = array('name' => 'country_name', 'class' => 'form-control');
+						echo form_input($att);
+						?>
+						<?php echo form_error('country_name'); ?>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">
+						Provinsi
+					</label>
+						<?php
+						$att = array('name' => 'state_name', 'class' => 'form-control');
+						echo form_input($att);
+						?>
+						<?php echo form_error('state_name'); ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12">
+						<label class="form-label">
+						Locality
+						</label>
+						<?php
+						$att = array('name' => 'locality_name', 'class' => 'form-control');
+						echo form_input($att);
+						?>
+						<?php echo form_error('locality_name'); ?>
+					</div>
+					
+				</div>
+				<div class="form-group">
+					<div class="col-md-6">
+						<label class="form-label">
+						Organisasi
+						</label>
+						<?php
+						$att = array('name' => 'organization_name', 'class' => 'form-control');
+						echo form_input($att);
+						?>
+						<?php echo form_error('organization_name'); ?>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">
+						Unit Organisasi
+					</label>
+						<?php
+						$att = array('name' => 'organizational_unit', 'class' => 'form-control');
+						echo form_input($att);
+						?>
+						<?php echo form_error('organizational_unit'); ?>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-md-12 text-center" style="padding:10px;">
+						<?php
+						$att = ['class' => 'btn btn-primary', 'value' => 'Buat Certificate'];
+						echo form_submit($att);
+						?>
+					</div>
 				</div>
 				<?php 
 					echo form_close();
