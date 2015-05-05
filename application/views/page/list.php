@@ -40,8 +40,8 @@
 										<span class="sr-only">Toggle Dropdown</span>
 									</button>
 									<ul role="menu" class="dropdown-menu">
-										<li><a href="<?php echo base_url(); ?>index.php/main/download/private-key/<?php echo $row->id; ?>">Download Private Key</a></li>
-										<li><a href="<?php echo base_url(); ?>index.php/main/download/csr/<?php echo $row->id; ?>">Donwload CSR</a></li>										
+										<li><a href="<?php echo base_url(); ?>index.php/main/download/private-key/<?php echo $row->id; ?>" target="_blank">Download Private Key</a></li>
+										<li><a href="<?php echo base_url(); ?>index.php/main/download/cert/<?php echo $row->id; ?>" target="_blank">Donwload Certificate</a></li>										
 									</ul>
 								</div>
 							</td>

@@ -12,7 +12,6 @@ class User extends CI_Model {
 	
 	function attempt($data)
 	{
-	var_dump($data);
 		$query = $this->db->get_where($this->table, $data);
 		if($query->num_rows() > 0)
 		{
