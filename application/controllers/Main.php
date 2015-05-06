@@ -92,15 +92,6 @@ class Main extends CI_Controller {
              return redirect('main/lists');
         $arr = array('id' => $id);
         $certificate = $this->Certificate->first($arr)->row();
-        $arr_t = array(
-           'countryName' => $certificate->country_name,
-           'stateOrProvinceName' => $certificate->state_name,
-           'localityName' => $certificate->locality_name,
-           'organizationName' => $certificate->organization_name,
-           'organizationalUnitName' => $certificate->organizational_unit,
-           'commonName' => $certificate->common_name,
-           'emailAddress' => $certificate->email_address
-           );
         $this->generate($type, $certificate);
 
     }
@@ -147,10 +138,16 @@ class Main extends CI_Controller {
               fwrite($f, $privKey->getPrivateKey());
               fclose($f);     
          }elseif($type=='cert'){
-              $file = './public/client/pk_'.$data->organization_name.'.cert';
+              $file = './public/client/csr_'.$data->organization_name.'.cert';
               $f = fopen($file, "w");
               fwrite($f, $x509->saveX509($result));
               fclose($f); 
+         }elseif($type=='key-pair'){
+             $file = './public/client/kp_'.$data->organization_name.'.txt';
+             $f = fopen($file, "w");
+             fwrite($f, $privKey->getPrivateKey());
+             fwrite($f, $pubKey->getPublicKey());
+             fclose($f);
          }
          
          if (file_exists($file)) {
@@ -166,7 +163,7 @@ class Main extends CI_Controller {
      }
     }
 
-    public function start2()
+    /*public function start2()
     {
          $data = array('email' => 'admin@local.com', 'password' => '12345','level' => '1');
     //		$this->User->insert($data);
@@ -224,7 +221,7 @@ class Main extends CI_Controller {
          $f = fopen('./public/ca/ca.crt', "w");
          fwrite($f, $x509->saveX509($result));
          fclose($f);
-    }
+    }*/
 }
 
 Class CertificateAuthority {
