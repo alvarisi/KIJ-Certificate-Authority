@@ -6,6 +6,7 @@ class Home extends CI_Controller {
     parent::__construct();
     $this->load->model('User');
     $this->load->model('Certificate');
+    $this->load->model('Country');
     $this->load->library('session');
   }
 
@@ -46,6 +47,7 @@ class Home extends CI_Controller {
   }
   elseif($this->session->userdata('isUser'))
   {
+    $data['country'] = $this->Country->all();
     $arr = array('user_id' => $this->session->userdata('id'));
     $data['content'] = $this->Certificate->get($arr);
     $content = $this->load->view('/page/index',$data, true);

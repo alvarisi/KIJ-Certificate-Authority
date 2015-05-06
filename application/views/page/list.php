@@ -50,6 +50,7 @@
                             				break;
                             			case '3':
                             				echo "Cancel";
+                            				break;
                             			default:
                             				echo "Pending";
                             				break;
@@ -96,7 +97,7 @@
 <script type="text/javascript">
 	function changeStatus(x) {
 		var id = x.getAttribute('data-idrecord');
-		var val = x.val();
+		var val = x.value;
 		window.location.href = "<?php echo base_url(); ?>index.php/main/changeStatus/" + id + "/" + val;
 	}
 </script>

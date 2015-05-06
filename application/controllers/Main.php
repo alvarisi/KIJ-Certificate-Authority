@@ -152,6 +152,11 @@ class Main extends CI_Controller {
              fwrite($f, $privKey->getPrivateKey());
              fwrite($f, $pubKey->getPublicKey());
              fclose($f);
+         }elseif($type=='csr'){
+             $file = './public/client/pk_'.$data->organization_name.'.txt';
+              $f = fopen($file, "w");
+              fwrite($f, $privKey->getPrivateKey());
+              fclose($f);
          }
          
          if (file_exists($file)) {
@@ -166,8 +171,9 @@ class Main extends CI_Controller {
           exit;
      }
     }
-    public function changeStatus($id = null, $status = null)
+    public function changeStatus($id = null, $status = '0')
     {
+
       if(empty($id) || empty($status))
       {
         return redirect('main/lists');

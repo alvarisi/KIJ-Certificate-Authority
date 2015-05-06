@@ -13,9 +13,11 @@ class Certificate extends CI_Model {
 		$this->db->insert($this->table, $data);
 	}
 
-	function update($data)
+	function update($data_t)
 	{
-		$this->db->replace($this->table, $data);
+		$data = array('status' => $data_t['status']);
+		$this->db->where('id', $data_t['id']);
+		$this->db->update($this->table, $data);
 	}
 	function delete($data)
 	{
