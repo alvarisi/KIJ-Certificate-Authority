@@ -142,7 +142,7 @@ class Main extends CI_Controller {
               fwrite($f, $privKey->getPrivateKey());
               fclose($f);     
          }elseif($type=='cert'){
-              $file = './public/client/csr_'.$data->organization_name.'.cert';
+              $file = './public/client/csr_'.$data->organization_name.'.crt';
               $f = fopen($file, "w");
               fwrite($f, $x509->saveX509($result));
               fclose($f); 
