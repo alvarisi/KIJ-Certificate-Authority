@@ -94,6 +94,8 @@ class Main extends CI_Controller {
              return redirect('main/lists');
         $arr = array('id' => $id);
         $certificate = $this->Certificate->first($arr)->row();
+        if($certificate->status != '1')
+          return "Forbidden";
         $this->generate($type, $certificate);
 
     }
@@ -164,27 +166,38 @@ class Main extends CI_Controller {
           exit;
      }
     }
-
-    /*public function start2()
+    public function changeStatus($id = null, $status = null)
     {
-         $data = array('email' => 'admin@local.com', 'password' => '12345','level' => '1');
-    //		$this->User->insert($data);
-         $arr_t = array(
-              'countryName' => 'ID',
-              'stateOrProvinceName' => 'Jawa Timur',
-              'localityName' => 'Surabaya',
-              'organizationName' => 'Institut Teknologi Sepuluh Nopember',
-              'organizationalUnitName' => 'Teknik Informatika',
-              'commonName' => 'KIJ',
-              'emailAddress' => 'admin@local.com'
-              );
-         $ca = new CertificateAuthority($arr_t);
-         $pk = $ca->set_private_key();
-         $csr = $ca->generateCSR();
-         $sscert = $ca->selfSign($csr);
-         openssl_x509_export_to_file($sscert,base_url().'public/ca/ca.crt');
-    //		openssl_csr_export($csr, $csrout) and var_dump($csrout);
+      if(empty($id) || empty($status))
+      {
+        return redirect('main/lists');
+      }
+      $arr = array('id' => $id, 'status' => $status);
+
+      $this->Certificate->update($arr);
+      return redirect('main/lists');
     }
+
+    // public function start2()
+    // {
+    //      $data = array('email' => 'admin@local.com', 'password' => '12345','level' => '1');
+    // //		$this->User->insert($data);
+    //      $arr_t = array(
+    //           'countryName' => 'ID',
+    //           'stateOrProvinceName' => 'Jawa Timur',
+    //           'localityName' => 'Surabaya',
+    //           'organizationName' => 'Institut Teknologi Sepuluh Nopember',
+    //           'organizationalUnitName' => 'Teknik Informatika',
+    //           'commonName' => 'KIJ',
+    //           'emailAddress' => 'admin@local.com'
+    //           );
+    //      $ca = new CertificateAuthority($arr_t);
+    //      $pk = $ca->set_private_key();
+    //      $csr = $ca->generateCSR();
+    //      $sscert = $ca->selfSign($csr);
+    //      openssl_x509_export_to_file($sscert,base_url().'public/ca/ca.crt');
+    // //		openssl_csr_export($csr, $csrout) and var_dump($csrout);
+    // }
     public function start()
     {
         $data = array('email' => 'admin@local.com', 'password' => '12345','level' => '1');
@@ -223,7 +236,7 @@ class Main extends CI_Controller {
          $f = fopen('./public/ca/ca.crt', "w");
          fwrite($f, $x509->saveX509($result));
          fclose($f);
-    }*/
+    }
 }
 
 Class CertificateAuthority {
