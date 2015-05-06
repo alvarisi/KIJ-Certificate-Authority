@@ -42,13 +42,13 @@ class Home extends CI_Controller {
    if($this->session->userdata('isAdmin'))
    {
     $data['content'] = $this->Certificate->all();
-    $content = $this->load->view('/page/index',$data, true);
+    $content = $this->load->view('/page/list',$data, true);
   }
   elseif($this->session->userdata('isUser'))
   {
     $arr = array('user_id' => $this->session->userdata('id'));
     $data['content'] = $this->Certificate->get($arr);
-    $content = $this->load->view('/page/list',$data, true);
+    $content = $this->load->view('/page/index',$data, true);
   }
   else
   {
