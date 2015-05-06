@@ -48,7 +48,7 @@
 						<?php
 						$options = array();
 						foreach ($country->result() as $row) {
-							array_push($options, array($row->code => $row->name));
+							$options[$row->code] =  $row->name;
 						}
 						$att = array('name' => 'country_name', 'class' => 'form-control');
 						echo form_dropdown('country_name', $options, null, $att);

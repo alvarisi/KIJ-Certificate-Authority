@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="list-group">
-            <a href="'.base_url('index.php/main/').'" class="list-group-item">Tambahkan Certificate</a>';
+            <a href="<?php echo base_url('index.php/main/'); ?>" class="list-group-item">Tambahkan Certificate</a>
 			<a href="<?php echo base_url('index.php/main/lists'); ?>" class="list-group-item active">Daftar Certificate</a>
 			<a href="<?php echo base_url('index.php/home/logout'); ?>" class="list-group-item">Keluar</a>
 		</div>
