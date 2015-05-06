@@ -8,6 +8,7 @@ class Main extends CI_Controller {
          parent::__construct();
          $this->load->model('User');
          $this->load->model('Certificate');
+         $this->load->model('Country');
     }
 
     protected $layout = '/layout/app';
@@ -39,8 +40,9 @@ class Main extends CI_Controller {
     }
     public function index()
     {
-         $content = $this->load->view('/page/index',null, true);
-         $this->render($content);
+        $data['country'] = $this->Country->all();
+        $content = $this->load->view('/page/index',$data, true);
+        $this->render($content);
     }
 
     public function lists()
