@@ -7,7 +7,7 @@
             <?php if($this->session->userdata('isUser')){ ?>
                 <a href="<?php echo base_url('index.php/main/'); ?>" class="list-group-item">Tambahkan Certificate</a>
             <?php } ?>
-            <a href="<?php echo base_url('index.php/main/upload'); ?>" class="list-group-item">Upload Your CSR</a>
+            <a href="<?php echo base_url('index.php/main/upload'); ?>" class="list-group-item">Upload CSR</a>
 			<a href="<?php echo base_url('index.php/main/lists'); ?>" class="list-group-item active">Daftar Certificate</a>
 			<a href="<?php echo base_url('index.php/home/logout'); ?>" class="list-group-item">Keluar</a>
 		</div>
