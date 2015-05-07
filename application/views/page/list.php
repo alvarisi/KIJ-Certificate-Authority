@@ -4,7 +4,10 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="list-group">
-            <a href="<?php echo base_url('index.php/main/'); ?>" class="list-group-item">Tambahkan Certificate</a>
+            <?php if($this->session->userdata('isUser')){ ?>
+                <a href="<?php echo base_url('index.php/main/'); ?>" class="list-group-item">Tambahkan Certificate</a>
+            <?php } ?>
+            <a href="<?php echo base_url('index.php/main/upload'); ?>" class="list-group-item">Upload Your CSR</a>
 			<a href="<?php echo base_url('index.php/main/lists'); ?>" class="list-group-item active">Daftar Certificate</a>
 			<a href="<?php echo base_url('index.php/home/logout'); ?>" class="list-group-item">Keluar</a>
 		</div>
@@ -44,13 +47,10 @@
                             				break;
                             			case '1':
                             				echo 'Signed';
-                            				break;
-                            			case '2':
-                            				echo "Revoked";
-                            				break;
-                            			case '3':
-                            				echo "Cancel";
-                            				break;
+                                            break;
+                                        case '2':
+                                            echo 'Revoked';
+                                            break;
                             			default:
                             				echo "Pending";
                             				break;
@@ -66,9 +66,9 @@
 									</button>
 									<ul role="menu" class="dropdown-menu">
 										<li><a href="<?php echo base_url(); ?>index.php/main/download/csr/<?php echo $row->id; ?>" target="_blank">Download Self CSR</a></li>
+                                        <li><a href="<?php echo base_url(); ?>index.php/main/download/key-pair/<?php echo $row->id; ?>" target="_blank">Download Key Pair</a></li>
 										<?php if($row->status=='1'){ ?>
-										<li><a href="<?php echo base_url(); ?>index.php/main/download/private-key/<?php echo $row->id; ?>" target="_blank">Download Private Key</a></li>
-										<li><a href="<?php echo base_url(); ?>index.php/main/download/cert/<?php echo $row->id; ?>" target="_blank">Download Certificate</a></li>
+										<li><a href="<?php echo base_url(); ?>index.php/main/download/cert/<?php echo $row->id; ?>" target="_blank">Download CA</a></li>
 										<?php } ?>
 									</ul>
 								</div>
@@ -79,8 +79,7 @@
 								$options = array(
 									'0' => 'Pending',
 									'1' => 'Sign',
-									'2' => 'Revoke',
-									'3' => 'Cancel'
+                                    '2' => 'Revoke'
 								);
 								echo form_dropdown('status',$options, $row->status, array('class' => 'form-control','data-idrecord' => $row->id, 'onChange' => 'changeStatus(this)'));
 								?>
