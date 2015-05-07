@@ -5,6 +5,7 @@
 	<div class="col-md-3">
 		<div class="list-group">
           	<a href="<?php echo base_url('index.php/main/'); ?>" class="list-group-item active">Tambahkan Certificate</a>
+            <a href="<?php echo base_url('index.php/main/upload'); ?>" class="list-group-item">Upload Your CSR</a>
           	<a href="<?php echo base_url('index.php/main/lists'); ?>" class="list-group-item">Daftar Certificate</a>
 		<a href="<?php echo base_url('index.php/home/logout'); ?>" class="list-group-item">Keluar</a>
         </div>

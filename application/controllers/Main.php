@@ -45,6 +45,27 @@ class Main extends CI_Controller {
         $this->render($content);
     }
 
+    public function upload()
+    {
+        $content = $this->load->view('/page/upload',null, true);
+        $this->render($content);
+    }
+
+    public function do_upload()
+    {
+        $config['upload_path']   = './public/client/uploads/';
+        $config['allowed_types'] = 'crt|txt|cert|csr';
+
+        $this->load->library('upload', $config);
+        if($this->upload->do_upload()){
+            $cert = $this->upload->data();
+            die(print_r($cert,true));
+        }
+        else{
+            $this->index();
+        }
+    }
+
     public function lists()
     {
        $data = null;
@@ -94,8 +115,6 @@ class Main extends CI_Controller {
              return redirect('main/lists');
         $arr = array('id' => $id);
         $certificate = $this->Certificate->first($arr)->row();
-        if($certificate->status != '1')
-          return "Forbidden";
         $this->generate($type, $certificate);
 
     }
@@ -128,9 +147,18 @@ class Main extends CI_Controller {
          $subject->setDNProp('id-at-organizationName', $data->organization_name);
          $subject->setPublicKey($pubKey);
 
+         $subcsr = new File_X509();
+         $subcsr->setDNProp('id-at-organizationName', $data->organization_name);
+         $subcsr->setPrivateKey($privKey);
+
+         $csr = $subcsr->signCSR();
+
          $issuer = new File_X509();
          $issuer->setPrivateKey($CAPrivKey);
          $issuer->setDN($CASubject= $subject->getDN());
+
+         $newissuer = new File_X509();
+         $nissue = $newissuer->loadX509('./public/ca/ca.crt');
 
          $x509 = new File_X509();
          $result = $x509->sign($issuer, $subject);
@@ -142,7 +170,11 @@ class Main extends CI_Controller {
               fwrite($f, $privKey->getPrivateKey());
               fclose($f);     
          }elseif($type=='cert'){
+<<<<<<< HEAD
               $file = './public/client/csr_'.$data->organization_name.'.crt';
+=======
+              $file = './public/client/ca_'.$data->organization_name.'.crt';
+>>>>>>> 51b3a5dc25b675bbfced6518d101ef6980329c99
               $f = fopen($file, "w");
               fwrite($f, $x509->saveX509($result));
               fclose($f); 
@@ -153,9 +185,9 @@ class Main extends CI_Controller {
              fwrite($f, $pubKey->getPublicKey());
              fclose($f);
          }elseif($type=='csr'){
-             $file = './public/client/pk_'.$data->organization_name.'.txt';
+              $file = './public/client/csr_'.$data->organization_name.'.csr';
               $f = fopen($file, "w");
-              fwrite($f, $privKey->getPrivateKey());
+              echo $subcsr->saveCSR($csr);
               fclose($f);
          }
          
@@ -211,18 +243,18 @@ class Main extends CI_Controller {
          //create private key for CA Cert
          $CAPrivKey = new Crypt_RSA();
          extract($CAPrivKey->createKey());
-         $CAPrivKey->loadKey($privatekey);
+         $CAPrivKey->loadKey($CAPrivkey);
 
          $pubKey = new Crypt_RSA();
-         $pubKey->loadKey($publickey);
+         $pubKey->loadKey($pubKey);
          $pubKey->setPublicKey();
 
          $f = fopen('./public/ca/pk.txt', "w");
-         fwrite($f, $privatekey);
+         fwrite($f, $CAPrivKey);
          fclose($f);
 
          $f = fopen('./public/ca/pb.txt', "w");
-         fwrite($f, $publickey);
+         fwrite($f, $pubKey);
          fclose($f);
 
          // create a self-signed cert that'll serve as the CA
