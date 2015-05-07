@@ -51,16 +51,15 @@ class Main extends CI_Controller {
         $this->render($content);
     }
 
-    public function addupload()
+    public function do_upload()
     {
-        $this->load->library('upload');
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('file_csr','Upload CSR', 'required');
-        if($this->form_validation->run()) {
-            $cert = $this->input->post('file_csr');
-            $data = array(
+        $config['upload_path']   = './public/client/uploads/';
+        $config['allowed_types'] = 'crt|txt|cert|csr';
 
-            );
+        $this->load->library('upload', $config);
+        if($this->upload->do_upload()){
+            $cert = $this->upload->data();
+            die(print_r($cert,true));
         }
         else{
             $this->index();
@@ -182,7 +181,7 @@ class Main extends CI_Controller {
              fwrite($f, $pubKey->getPublicKey());
              fclose($f);
          }elseif($type=='csr'){
-              $file = './public/client/csr_'.$data->organization_name.'.crt';
+              $file = './public/client/csr_'.$data->organization_name.'.csr';
               $f = fopen($file, "w");
               echo $subcsr->saveCSR($csr);
               fclose($f);

@@ -17,18 +17,15 @@
             </div>
             <div class="panel-body">
                 <?php
-                echo form_open_multipart('main/addupload',[ 'class' => 'form' ]);
+                echo form_open_multipart('main/do_upload',[ 'class' => 'form' ]);
                 ?>
                 <div class="form-group">
                     <div class="col-md-6">
                         <label class="form-label">
                             Upload CSR
                         </label>
-                        <?php
-                        $att = array('name' => 'file_csr', 'class' => 'form-control');
-                        echo form_upload($att);
-                        ?>
-                        <?php echo form_error('common_name'); ?>
+                        <input type="file" name="userfile">
+                        <?php echo form_error('userfile'); ?>
                     </div>
                 </div>
                 <div class="form-group">
