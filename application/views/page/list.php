@@ -59,7 +59,7 @@
                             </td>
 							<td>
 								<div class="btn-group">
-								<button class="btn btn-info" type="button">Action</button>
+								<button class="btn btn-info" type="button">Download</button>
 									<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" type="button">
 										<span class="caret"></span>
 										<span class="sr-only">Toggle Dropdown</span>

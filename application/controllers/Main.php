@@ -57,13 +57,14 @@ class Main extends CI_Controller {
         $config['allowed_types'] = 'crt|txt|cert|csr';
 
         $this->load->library('upload', $config);
-        if($this->upload->do_upload()){
+        if($this->upload->do_upload('userfile')){
             $cert = $this->upload->data();
             die(print_r($cert,true));
         }
         else{
             $this->index();
         }
+        return redirect('home/index');
     }
 
     public function lists()
