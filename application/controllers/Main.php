@@ -146,10 +146,90 @@ class Main extends CI_Controller {
 
          $subject = new File_X509();
          $subject->setDNProp('id-at-organizationName', $data->organization_name);
-         $subject->setPublicKey($pubKey);
+         $subject->setDN( 
+           array( 
+               'rdnSequence' => array( 
+                   array( 
+                       array( 
+                           'type' => 'id-at-organizationName', 
+                           'value'=> $data->organization_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-countryName', 
+                           'value'=> $data->country_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-commonName', 
+                           'value'=> $data->common_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-stateOrProvinceName', 
+                           'value'=> $data->state_name 
+                       ),
+                       array( 
+                           'type' => 'id-emailAddress', 
+                           'value'=> $data->email_address 
+                       ),
+                       array( 
+                           'type' => 'id-at-organizationalUnitName', 
+                           'value'=> $data->organizational_unit 
+                       ),
+                       array( 
+                           'type' => 'id-at-localityName', 
+                           'value'=> $data->locality_name 
+                       )
+                   ) 
+               ) 
+           )
+         );
+        $subject->setDN(array( 
+            'O' => $data->country_name 
+        )); 
+        $subject->setDN('/O='.$data->country_name);
+        $subject->setPublicKey($pubKey);
 
          $subcsr = new File_X509();
          $subcsr->setDNProp('id-at-organizationName', $data->organization_name);
+         $subcsr->setDN( 
+           array( 
+               'rdnSequence' => array( 
+                   array( 
+                       array( 
+                           'type' => 'id-at-organizationName', 
+                           'value'=> $data->organization_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-countryName', 
+                           'value'=> $data->country_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-commonName', 
+                           'value'=> $data->common_name 
+                       ),
+                       array( 
+                           'type' => 'id-at-stateOrProvinceName', 
+                           'value'=> $data->state_name 
+                       ),
+                       array( 
+                           'type' => 'id-emailAddress', 
+                           'value'=> $data->email_address 
+                       ),
+                       array( 
+                           'type' => 'id-at-organizationalUnitName', 
+                           'value'=> $data->organizational_unit 
+                       ),
+                       array( 
+                           'type' => 'id-at-localityName', 
+                           'value'=> $data->locality_name 
+                       )
+                   ) 
+               ) 
+           )
+         );
+        $subcsr->setDN(array( 
+            'O' => $data->country_name 
+        )); 
+        $subcsr->setDN('/O='.$data->country_name);
          $subcsr->setPrivateKey($privKey);
 
          $csr = $subcsr->signCSR();
@@ -166,23 +246,23 @@ class Main extends CI_Controller {
          $file = '';
          if($type == 'private-key')
          {
-              $file = './public/client/pk_'.$data->organization_name.'.txt';
+              $file = './public/client/pk_'.preg_replace('/\s+/', '',$data->organization_name).'.txt';
               $f = fopen($file, "w");
               fwrite($f, $privKey->getPrivateKey());
               fclose($f);     
          }elseif($type=='cert'){
-              $file = './public/client/ca_'.$data->organization_name.'.crt';
+              $file = './public/client/ca_'.preg_replace('/\s+/', '',$data->organization_name).'.crt';
               $f = fopen($file, "w");
               fwrite($f, $x509->saveX509($result));
               fclose($f); 
          }elseif($type=='key-pair'){
-             $file = './public/client/kp_'.$data->organization_name.'.txt';
+             $file = './public/client/kp_'.preg_replace('/\s+/', '',$data->organization_name).'.txt';
              $f = fopen($file, "w");
-             fwrite($f, $privKey->getPrivateKey());
+             fwrite($f, $privKey->getPrivateKey().PHP_EOL);
              fwrite($f, $pubKey->getPublicKey());
              fclose($f);
          }elseif($type=='csr'){
-              $file = './public/client/csr_'.$data->organization_name.'.csr';
+              $file = './public/client/csr_'.preg_replace('/\s+/', '',$data->organization_name).'.csr';
               $f = fopen($file, "w");
               echo $subcsr->saveCSR($csr);
               fclose($f);

@@ -67,7 +67,7 @@ public function register()
 public function postRegister()
 {
   $this->load->library('form_validation');
-  $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+  $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
   $this->form_validation->set_rules('password', 'Password', 'required|min_length[5]');
   $this->form_validation->set_rules('cpassword', 'Konfirmasi Password', 'required|matches[password]');
   if ($this->form_validation->run())
