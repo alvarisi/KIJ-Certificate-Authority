@@ -320,10 +320,10 @@ class Main extends CI_Controller {
          //create private key for CA Cert
          $CAPrivKey = new Crypt_RSA();
          extract($CAPrivKey->createKey());
-         $CAPrivKey->loadKey($CAPrivkey);
+         $CAPrivKey->loadKey($privatekey);
 
          $pubKey = new Crypt_RSA();
-         $pubKey->loadKey($pubKey);
+         $pubKey->loadKey($publickey);
          $pubKey->setPublicKey();
 
          $f = fopen('./public/ca/pk.txt', "w");
@@ -337,7 +337,47 @@ class Main extends CI_Controller {
          // create a self-signed cert that'll serve as the CA
          $subject = new File_X509();
          $subject->setDNProp('id-at-organizationName', 'Institut Teknologi Sepuluh Nopember');
-         $subject->setPublicKey($pubKey);
+         $subject->setDN( 
+           array( 
+               'rdnSequence' => array( 
+                   array( 
+                       array( 
+                           'type' => 'id-at-organizationName', 
+                           'value'=> 'Institut Teknologi Sepuluh Nopember'
+                       ),
+                       array( 
+                           'type' => 'id-at-countryName', 
+                           'value'=> 'ID'
+                       ),
+                       array( 
+                           'type' => 'id-at-commonName', 
+                           'value'=> 'KIJ BTE'
+                       ),
+                       array( 
+                           'type' => 'id-at-stateOrProvinceName', 
+                           'value'=> 'Jawa Timur'
+                       ),
+                       array( 
+                           'type' => 'id-emailAddress', 
+                           'value'=> 'kij@its.ac.id'
+                       ),
+                       array( 
+                           'type' => 'id-at-organizationalUnitName', 
+                           'value'=> 'Teknik Informatika'
+                       ),
+                       array( 
+                           'type' => 'id-at-localityName', 
+                           'value'=> 'Surabaya'
+                       )
+                   ) 
+               ) 
+           )
+         );
+        $subject->setDN(array( 
+            'O' => 'Institut Teknologi Sepuluh Nopember'
+        )); 
+        $subject->setDN('/O='.'Institut Teknologi Sepuluh Nopember');
+        $subject->setPublicKey($pubKey);
 
          $issuer = new File_X509();
          $issuer->setPrivateKey($CAPrivKey);
